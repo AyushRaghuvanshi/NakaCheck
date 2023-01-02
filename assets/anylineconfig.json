@@ -3,7 +3,7 @@
 
   "options": {
     "camera": {
-      "captureResolution": "1080p",
+      "captureResolution": "720p",
       "zoomGesture": true
     },
     "flash": {
