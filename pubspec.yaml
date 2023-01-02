@@ -10,6 +10,8 @@ dependencies:
   flutter_svg: ^1.1.6
   flutter_svg_provider: ^1.0.3
   dio: ^4.0.6
+  anyline_plugin: ^42.2.0
+  permission_handler: ^10.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

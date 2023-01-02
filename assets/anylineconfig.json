@@ -1,0 +1,47 @@
+{
+  "license": "ewogICJsaWNlbnNlS2V5VmVyc2lvbiIgOiAiMy4wIiwKICAiZGVidWdSZXBvcnRpbmciIDogIm9uIiwKICAibWFqb3JWZXJzaW9uIiA6ICIzNyIsCiAgIm1heERheXNOb3RSZXBvcnRlZCIgOiA1LAogICJhZHZhbmNlZEJhcmNvZGUiIDogdHJ1ZSwKICAic3VwcG9ydGVkQmFyY29kZUZvcm1hdHMiIDogWyAiQUxMIiBdLAogICJwbGF0Zm9ybSIgOiBbICJBbmRyb2lkIiwgImlPUyIsICJKUyIsICJXaW5kb3dzIiwgIldlYiIgXSwKICAic2NvcGUiIDogWyAiQUxMIiBdLAogICJzaG93V2F0ZXJtYXJrIiA6IHRydWUsCiAgInRvbGVyYW5jZURheXMiIDogMzAsCiAgInZhbGlkIiA6ICIyMDIzLTAyLTAxIiwKICAiaW9zSWRlbnRpZmllciIgOiBbICJjb20uZXhhbXBsZS5uYWthY2hlY2siIF0sCiAgImFuZHJvaWRJZGVudGlmaWVyIiA6IFsgImNvbS5leGFtcGxlLm5ha2FjaGVjayIgXSwKICAid2luZG93c0lkZW50aWZpZXIiIDogWyAiY29tLmV4YW1wbGUubmFrYWNoZWNrIiBdLAogICJqc0lkZW50aWZpZXIiIDogWyAiY29tLmV4YW1wbGUubmFrYWNoZWNrIiBdLAogICJ3ZWJJZGVudGlmaWVyIiA6IFsgImNvbS5leGFtcGxlLm5ha2FjaGVjayIgXQp9CgpZeTZCTVMrSkw2WjFTek1STG9abFBZYStSc0FNWEtuZEdFTnNLL2hRQ0dzOEo0WUZlZUpFeGdmVkxpVnFCVUVzYlNzVWNPNUN2RnEvbjJBTTZXclVKVlFXS0lzZHBWcExnV1c0OVEwS1pTaC8zSTcwUURoWnRWTjF5TzF3ckgvTUJFN0lyb2dYcjFLWHhtSE9yU1lUbklRanRneDZRQktJOVlGUUFoUlNyNTBFcVdyYzczVGlldTBGNG5TNlZTRlVlalJPQkovSVkxU1R4VDVkRGs1WWxZaWo4UmhpWVRkdjhkR3BJaUIrZ0phZFV0UExubjIrMVZXbmFCaGhMOHJZTDVPMkpnZ0svVjA4NUszc2xoK3RLQUtVekJPSVhwaUVsaENOL3BDeDRJcjFrR1BpaFpmbWJVNnNkMTNtM2U5bk1VYmx0bW1yOWljNDVUbHA2VXplUEE9PQ==",
+
+  "options": {
+    "camera": {
+      "captureResolution": "1080p",
+      "zoomGesture": true
+    },
+    "flash": {
+      "mode": "manual",
+      "alignment": "top_left"
+    },
+    "viewPlugin": {
+      "plugin": {
+        "id": "LicensePlate_ID",
+        "licensePlatePlugin": {}
+      },
+      "cutoutConfig": {
+        "style": "rect",
+        "maxWidthPercent": "80%",
+        "maxHeightPercent": "80%",
+        "alignment": "top_half",
+        "width": 720,
+        "ratioFromSize": {
+          "width": 2,
+          "height": 1
+        },
+        "strokeWidth": 2,
+        "cornerRadius": 10,
+        "strokeColor": "FFFFFF",
+        "outerColor": "000000",
+        "outerAlpha": 0.3,
+        "feedbackStrokeColor": "0099FF"
+      },
+      "scanFeedback": {
+        "animationDuration": 0,
+        "style": "RECT",
+        "strokeWidth": 2,
+        "strokeColor": "0099FF",
+        "blinkOnResult": true,
+        "beepOnResult": true,
+        "vibrateOnResult": true
+      },
+      "cancelOnResult": true
+    }
+  }
+}
