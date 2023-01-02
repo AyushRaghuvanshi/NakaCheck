@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "781524884934",
+    "project_id": "ethos-3a465",
+    "storage_bucket": "ethos-3a465.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781524884934:android:951a945539be252e5266c7",
+        "android_client_info": {
+          "package_name": "com.example.nakacheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781524884934-j693i1pa0j13asuhd4fnrdliidn6q5st.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nakacheck",
+            "certificate_hash": "8a8935b61ac1cec170a2ebc172b18b8f60ddd939"
+          }
+        },
+        {
+          "client_id": "781524884934-2spq10vl2s72m8ms0ce7f7isvm2k4pgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFYqPEHLR0Jd4xKw9QGC3eimAPaIay9SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781524884934-2spq10vl2s72m8ms0ce7f7isvm2k4pgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
