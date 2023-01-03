@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -9,6 +10,7 @@ import 'package:nakacheck/core/utils/size_utils.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
 import 'package:nakacheck/widgets/custom_image_view.dart';
 import 'package:nakacheck/widgets/custom_text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPageOneScreen extends StatelessWidget {
   @override
@@ -18,7 +20,6 @@ class LoginPageOneScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.gray900,
-        resizeToAvoidBottomInset: false,
         body: Container(
           height: getVerticalSize(
             774.00,
@@ -147,6 +148,7 @@ class LoginPageOneScreen extends StatelessWidget {
                               return;
                             }
                             Dio dio = Dio();
+                            log("signing in");
                             Response res = await dio.post(
                                 'https://nakacheck.onrender.com/auth/login/',
                                 data: {
@@ -158,13 +160,20 @@ class LoginPageOneScreen extends StatelessWidget {
                                 ));
 
                             if (res.statusCode == 201) {
+                              log("successful sigin $res");
                               // if (true) {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setString("access",
+                                  jsonDecode(res.toString())['access']);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DashBoard(),
                                 ),
                               );
+                            } else {
+                              log("failed $res");
                             }
                             //Demo
                           }),
