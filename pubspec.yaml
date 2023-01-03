@@ -11,6 +11,7 @@ dependencies:
   firebase_messaging: ^14.2.1
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.2.16
   flutter_svg: ^1.1.6
   flutter_svg_provider: ^1.0.3
   permission_handler: ^10.2.0
@@ -23,3 +24,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
+flutter_native_splash:
+  background_image: assets/images/background.png
+  image: assets/images/logo.png
