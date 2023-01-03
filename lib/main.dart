@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/notifications/notification_handler.dart';
+import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
 import 'package:nakacheck/presentation/onboarding_screen/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
+  await App.loginCheck();
   FlutterNativeSplash.remove();
   runApp(MyApp());
 }
@@ -34,7 +37,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
           colorScheme:
               const ColorScheme.light().copyWith(primary: Color(0xFFF1F4F6))),
-      home: OnboardingScreen(),
+      home: App.authorized ? DashBoard() : OnboardingScreen(),
     );
   }
 }
