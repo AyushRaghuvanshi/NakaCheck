@@ -113,7 +113,6 @@ class Search extends StatelessWidget {
                         bottom: 12,
                       ),
                       margin: getMargin(
-                        left: 280,
                         top: 7,
                         right: 7,
                         bottom: 7,
