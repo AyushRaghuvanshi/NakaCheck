@@ -142,6 +142,10 @@ class LoginPageOneScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: (() async {
+                            if (_email.text.isEmpty ||
+                                _password.text.length < 6) {
+                              return;
+                            }
                             Dio dio = Dio();
                             Response res = await dio.post(
                                 'https://nakacheck.onrender.com/auth/login/',
@@ -162,7 +166,6 @@ class LoginPageOneScreen extends StatelessWidget {
                                 ),
                               );
                             }
-
                             //Demo
                           }),
                           child: Container(

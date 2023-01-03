@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:nakacheck/presentation/Dashboard/search.dart';
+import 'package:nakacheck/widgets/custom_text_form_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DashBoard extends StatefulWidget {
@@ -17,31 +19,40 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  void scanWithAnyline() async {
-    var status = await Permission.camera.status;
-    var anylinePlugin = AnylinePlugin();
-    var config = await rootBundle.loadString("assets/anylineconfig.json");
-    if (status.isGranted) {
-      log(status.isGranted.toString());
-      var stringResult;
-      try {
-        stringResult = await anylinePlugin.startScanning(config);
-      } catch (e) {
-        throw Exception(e);
-      }
-      Map<String, dynamic> result = jsonDecode(stringResult ?? "");
-      log(result['licensePlate'].toString());
-    } else {
-      await Permission.camera.request();
-    }
+  late TextEditingController _numberplate;
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _numberplate = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _numberplate.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: EmailTextArea(
+        controller: _numberplate,
+        labelText: 'Number Plate',
+        hintText: 'DL 64C 1222',
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          scanWithAnyline();
+          // scanWithAnyline();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Search(),
+              ));
         },
       ),
     );
