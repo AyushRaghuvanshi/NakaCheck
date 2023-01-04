@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
+import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import '../../core/utils/size_utils.dart';
 
@@ -12,9 +13,11 @@ class DashBoard extends StatefulWidget {
   State<DashBoard> createState() => _DashBoardState();
 }
 
+bool switchState = false;
+
 class _DashBoardState extends State<DashBoard> {
   late TextEditingController _numberplate;
-  bool switchState = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,6 +45,7 @@ class _DashBoardState extends State<DashBoard> {
             "assets/images/assam_logo.png",
           ),
         ),
+        elevation: 0,
         title: Text(
           "Jai Hind XYZ",
           style: TextStyle(
@@ -118,6 +122,11 @@ class _DashBoardState extends State<DashBoard> {
                   return GestureDetector(
                     onTap: () {
                       log("clicked at $index");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Alert(),
+                          ));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
