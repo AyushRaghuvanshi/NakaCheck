@@ -169,6 +169,8 @@ class LoginPageOneScreen extends StatelessWidget {
 
                               // prefs.setString("on-duty",
                               //     jsonDecode(res.toString())['on-duty']);
+                              prefs.setBool(
+                                  "duty", jsonDecode(res.toString())['duty']);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

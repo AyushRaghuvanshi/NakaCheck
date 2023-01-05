@@ -7,6 +7,7 @@ class App {
   static Future<void> loginCheck() async {
     final prefs = await SharedPreferences.getInstance();
     App.authorized = prefs.containsKey("access");
+    
   }
 
   static Future<void> dutyCheck() async {

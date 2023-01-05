@@ -2,7 +2,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
+import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
+import 'package:nakacheck/services/Api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/size_utils.dart';
 
 class DashBoard extends StatefulWidget {
@@ -12,13 +15,20 @@ class DashBoard extends StatefulWidget {
   State<DashBoard> createState() => _DashBoardState();
 }
 
+bool switchState = false;
+
 class _DashBoardState extends State<DashBoard> {
   late TextEditingController _numberplate;
-  bool switchState = false;
+  getduty() async{
+    final prefs = await SharedPreferences.getInstance();
+    switchState = await prefs.getBool('duty') ?? false;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
+    getduty();
     super.initState();
   }
 
@@ -42,6 +52,7 @@ class _DashBoardState extends State<DashBoard> {
             "assets/images/assam_logo.png",
           ),
         ),
+        elevation: 0,
         title: Text(
           "Jai Hind XYZ",
           style: TextStyle(
@@ -61,12 +72,16 @@ class _DashBoardState extends State<DashBoard> {
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
-                    onChanged: ((value) {
+                    onChanged: ((value) async {
                       setState(() {
                         switchState = !switchState;
                       });
-
-                      log("u naughty");
+                      Api api = Api();
+                      String result = await api.switchduty();
+                      if (result != 'success') {
+                        return;
+                      }
+                      // log("u naughty");
                     })),
                 Text(
                   switchState ? "On-Duty" : "Off-Duty",
@@ -118,6 +133,11 @@ class _DashBoardState extends State<DashBoard> {
                   return GestureDetector(
                     onTap: () {
                       log("clicked at $index");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Alert(),
+                          ));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
