@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:anyline_plugin/anyline_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart' as fs;
 import 'package:nakacheck/core/utils/color_constant.dart';
-import 'package:nakacheck/core/utils/image_constant.dart';
 import 'package:nakacheck/core/utils/size_utils.dart';
-import 'package:nakacheck/widgets/custom_image_view.dart';
-import 'package:nakacheck/widgets/custom_text_form_field.dart';
 import 'package:nakacheck/widgets/search_textform.dart';
 import 'package:permission_handler/permission_handler.dart';
 

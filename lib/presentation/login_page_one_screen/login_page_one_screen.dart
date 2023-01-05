@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/core/utils/image_constant.dart';
 import 'package:nakacheck/core/utils/size_utils.dart';
@@ -164,6 +165,10 @@ class LoginPageOneScreen extends StatelessWidget {
                                   await SharedPreferences.getInstance();
                               prefs.setString("access",
                                   jsonDecode(res.toString())['access']);
+                              await App.dutyCheck();
+
+                              // prefs.setString("on-duty",
+                              //     jsonDecode(res.toString())['on-duty']);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

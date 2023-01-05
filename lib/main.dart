@@ -14,6 +14,8 @@ void main() async {
   ]);
   await Firebase.initializeApp();
   await App.loginCheck();
+  await App.dutyCheck();
+
   FlutterNativeSplash.remove();
   runApp(MyApp());
 }
