@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
+import 'package:nakacheck/services/Api.dart';
 
 class Alert extends StatefulWidget {
   const Alert({Key? key}) : super(key: key);
@@ -77,12 +78,17 @@ class _AlertState extends State<Alert> {
                         activeTrackColor: ColorConstant.switchGreen,
                         activeColor: Colors.white,
                         inactiveTrackColor: ColorConstant.red300,
-                        onChanged: ((value) {
+                        onChanged: ((value) async {
                           setState(() {
                             switchState = !switchState;
                           });
+                          Api api = Api();
+                          String result = await api.switchduty();
+                          if (result != 'success') {
+                            return;
+                          }
 
-                          log("u naughty");
+                          // log("u naughty");
                         })),
                     Text(
                       switchState ? "On-Duty" : "Off-Duty",

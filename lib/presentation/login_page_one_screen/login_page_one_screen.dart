@@ -164,6 +164,8 @@ class LoginPageOneScreen extends StatelessWidget {
                                   await SharedPreferences.getInstance();
                               prefs.setString("access",
                                   jsonDecode(res.toString())['access']);
+                              prefs.setBool(
+                                  "duty", jsonDecode(res.toString())['duty']);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

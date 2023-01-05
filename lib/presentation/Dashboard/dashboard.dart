@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
+import 'package:nakacheck/services/Api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/size_utils.dart';
 
 class DashBoard extends StatefulWidget {
@@ -17,11 +19,16 @@ bool switchState = false;
 
 class _DashBoardState extends State<DashBoard> {
   late TextEditingController _numberplate;
+  getduty() async{
+    final prefs = await SharedPreferences.getInstance();
+    switchState = await prefs.getBool('duty') ?? false;
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
+    getduty();
     super.initState();
   }
 
@@ -65,12 +72,16 @@ class _DashBoardState extends State<DashBoard> {
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
-                    onChanged: ((value) {
+                    onChanged: ((value) async {
                       setState(() {
                         switchState = !switchState;
                       });
-
-                      log("u naughty");
+                      Api api = Api();
+                      String result = await api.switchduty();
+                      if (result != 'success') {
+                        return;
+                      }
+                      // log("u naughty");
                     })),
                 Text(
                   switchState ? "On-Duty" : "Off-Duty",
