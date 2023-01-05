@@ -14,6 +14,12 @@ class ColorConstant {
 
   static Color gray100 = fromHex('#f1f4f6');
 
+  static Color switchGreen = fromHex('#76ee59');
+
+  static Color boxBackBlack = fromHex('#1F1F24');
+
+  static Color boxArrowColor = fromHex('#C3c3c3');
+
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
