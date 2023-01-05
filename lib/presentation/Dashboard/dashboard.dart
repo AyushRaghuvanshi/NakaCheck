@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import '../../core/utils/size_utils.dart';
@@ -19,6 +20,7 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
+    App.sendLatLong();
     super.initState();
   }
 
