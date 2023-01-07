@@ -1,22 +1,28 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:nakacheck/services/provider.dart';
 import 'package:toast/toast.dart';
 
-class RedirectionAlert extends StatefulWidget {
+class RedirectionAlert extends ConsumerStatefulWidget {
   RedirectionAlert({Key? key, required this.sus, required this.vehicle})
       : super(key: key);
   bool sus;
   Vehicle vehicle;
   @override
-  State<RedirectionAlert> createState() => _RedirectionAlertState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RedirectionAlertState();
 }
 
-class _RedirectionAlertState extends State<RedirectionAlert> {
+class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
   @override
   Widget build(BuildContext context) {
+    final data = ref.watch(alertsprov);
     return Scaffold(
       bottomNavigationBar: (!widget.sus)
           ? null
@@ -127,7 +133,8 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
         ],
         elevation: 0,
       ),
-      body: Padding(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 64),
         child: SingleChildScrollView(
           child: Column(
@@ -267,26 +274,55 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                   ),
                   Container(
                     height: 250,
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                '13:01 - ',
-                                style: TextStyle(
-                                    color: (widget.sus)
-                                        ? ColorConstant.red300
-                                        : ColorConstant.yellow800),
+                    child: Container(
+                        child: data.when(
+                      data: (data) {
+                        log(data.toString());
+
+                        return ListView.builder(
+                          itemBuilder: (context, index) {
+                            int timecolon =
+                                data[index]['time'].toString().indexOf(':');
+                            String time = data[index]['time']
+                                    .toString()
+                                    .substring(timecolon - 2, timecolon) +
+                                data[index]['time']
+                                    .toString()
+                                    .substring(timecolon, timecolon + 3);
+                            String location = data[index]['sender_location']
+                                    .toString()
+                                    .split(',')[0] +
+                                data[index]['sender_location']
+                                    .toString()
+                                    .split(',')[1];
+                            log(location);
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '${time} - ',
+                                      style: TextStyle(
+                                          color: (widget.sus)
+                                              ? ColorConstant.red300
+                                              : ColorConstant.yellow800),
+                                    ),
+                                    Text('Vehicle Spotted at ${location}'),
+                                  ],
+                                ),
                               ),
-                              Text('Vehicle Spotted at IMS'),
-                            ],
-                          ),
+                            );
+                          },
+                          itemCount: data.length,
                         );
                       },
-                      itemCount: 100,
-                    ),
+                      error: (error, stackTrace) {},
+                      loading: () => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )),
                   )
                 ],
               )

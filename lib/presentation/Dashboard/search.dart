@@ -3,17 +3,19 @@ import 'dart:developer';
 import 'package:anyline_plugin/anyline_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/core/utils/size_utils.dart';
 import 'package:nakacheck/presentation/Alert/redirection.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:nakacheck/services/provider.dart';
 import 'package:nakacheck/widgets/search_textform.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Search extends StatelessWidget {
+class Search extends ConsumerWidget {
   TextEditingController _plate = TextEditingController();
-  void scanWithAnyline(dynamic context) async {
+  void scanWithAnyline(dynamic context, dynamic ref) async {
     var status = await Permission.camera.status;
     var anylinePlugin = AnylinePlugin();
     var config = await rootBundle.loadString("assets/anylineconfig.json");
@@ -40,6 +42,7 @@ class Search extends StatelessWidget {
           res['data']['registrationUnder'],
           res['data']['picture'],
           res['data']['model']);
+      ref.watch(numberPlate.notifier).state = vehicle.number;
       if (res['Suspicious'] == 'True') {
         Navigator.push(
             context,
@@ -63,7 +66,7 @@ class Search extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: ColorConstant.gray900,
@@ -144,6 +147,8 @@ class Search extends StatelessWidget {
                           res['data']['registeredUnder'],
                           res['data']['picture'],
                           res['data']['model']);
+                      ref.watch(numberPlate.notifier).state =
+                          vehicle.number ?? "";
                       if (res['Suspicious'] == 'True') {
                         Navigator.push(
                             context,
@@ -279,7 +284,7 @@ class Search extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton(
                           onPressed: (() {
-                            scanWithAnyline(context);
+                            scanWithAnyline(context, ref);
                           }),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFF89E31),
