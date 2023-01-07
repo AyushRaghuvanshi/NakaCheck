@@ -1,13 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
-import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
 import 'package:nakacheck/services/Api.dart';
 import 'package:toast/toast.dart';
 
@@ -307,12 +301,8 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
               ),
             ),
           ),
-        );
-      } else {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    });
+        ),
+      ),
+    );
   }
 }
