@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -7,10 +6,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Api {
   Dio dio = Dio();
 
-  String swtichDuty =
-      'https://nakacheck-3.suhailahmad4.repl.co/auth/onoffduty/';
+  String swtichDuty = 'https://nakacheck.azurewebsites.net/auth/onoffduty/';
+
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
+  String spot =
+      "https://nakacheck-3.suhailahmad4.repl.co/alerts/caughtSuspicious/";
+
+  String alert =
+      "https://nakacheck-3.suhailahmad4.repl.co/alerts/reportSuspicious/";
   Future<String> switchduty() async {
     Response res = await dio.put(swtichDuty,
         options: Options(validateStatus: (status) => true));
