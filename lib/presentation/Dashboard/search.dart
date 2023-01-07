@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/core/utils/size_utils.dart';
+import 'package:nakacheck/services/Api.dart';
 import 'package:nakacheck/widgets/search_textform.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -24,7 +25,16 @@ class Search extends StatelessWidget {
       }
       Map<String, dynamic> result = jsonDecode(stringResult ?? "");
       _plate.text = result['licensePlate'];
-      log(result['licensePlate'].toString());
+      Api api = Api();
+      String plate = _plate.text;
+      plate = plate.replaceAll(' ', '');
+      log(plate);
+      dynamic res = await api.chksus(plate);
+      if (res['Suspicious'] == 'True') {
+        log('sus');
+      } else {
+        log('all ok');
+      }
     } else {
       await Permission.camera.request();
     }
@@ -93,8 +103,18 @@ class Search extends StatelessWidget {
                   ),
                   fontStyle: TextFormFieldFontStyle.PoppinsRegular14WhiteA700,
                   suffix: GestureDetector(
-                    onTap: (() {
+                    onTap: (() async {
                       log(_plate.text);
+                      Api api = Api();
+                      String plate = _plate.text;
+                      plate = plate.replaceAll(' ', '');
+                      log(plate);
+                      dynamic res = await api.chksus(plate);
+                      if (res['Suspicious'] == "True") {
+                        log('Sus');
+                      } else {
+                        log('all ok');
+                      }
                     }),
                     child: Container(
                       child: Icon(
