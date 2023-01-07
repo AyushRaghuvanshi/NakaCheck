@@ -3,15 +3,17 @@ import 'dart:developer';
 import 'package:anyline_plugin/anyline_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/core/utils/size_utils.dart';
+import 'package:nakacheck/presentation/Alert/redirection.dart';
 import 'package:nakacheck/services/Api.dart';
 import 'package:nakacheck/widgets/search_textform.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Search extends StatelessWidget {
   TextEditingController _plate = TextEditingController();
-  void scanWithAnyline() async {
+  void scanWithAnyline(dynamic context) async {
     var status = await Permission.camera.status;
     var anylinePlugin = AnylinePlugin();
     var config = await rootBundle.loadString("assets/anylineconfig.json");
@@ -30,9 +32,28 @@ class Search extends StatelessWidget {
       plate = plate.replaceAll(' ', '');
       log(plate);
       dynamic res = await api.chksus(plate);
+      Vehicle vehicle = Vehicle(
+          res['data']['company'],
+          res['data']['number'],
+          res['data']['color'],
+          res['data']['registrationDate'],
+          res['data']['registrationUnder'],
+          res['data']['picture']);
       if (res['Suspicious'] == 'True') {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  RedirectionAlert(sus: true, vehicle: vehicle),
+            ));
         log('sus');
       } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  RedirectionAlert(sus: false, vehicle: vehicle),
+            ));
         log('all ok');
       }
     } else {
@@ -104,15 +125,38 @@ class Search extends StatelessWidget {
                   fontStyle: TextFormFieldFontStyle.PoppinsRegular14WhiteA700,
                   suffix: GestureDetector(
                     onTap: (() async {
+                      if (_plate.text.isEmpty) {
+                        return;
+                      }
                       log(_plate.text);
                       Api api = Api();
                       String plate = _plate.text;
                       plate = plate.replaceAll(' ', '');
                       log(plate);
                       dynamic res = await api.chksus(plate);
-                      if (res['Suspicious'] == "True") {
-                        log('Sus');
+                      log(res['data'].toString());
+                      Vehicle vehicle = Vehicle(
+                          res['data']['company'],
+                          res['data']['number'],
+                          res['data']['color'],
+                          res['data']['registrationDate'],
+                          res['data']['registeredUnder'],
+                          res['data']['picture']);
+                      if (res['Suspicious'] == 'True') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  RedirectionAlert(sus: true, vehicle: vehicle),
+                            ));
+                        log('sus');
                       } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RedirectionAlert(
+                                  sus: false, vehicle: vehicle),
+                            ));
                         log('all ok');
                       }
                     }),
@@ -233,7 +277,7 @@ class Search extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton(
                           onPressed: (() {
-                            scanWithAnyline();
+                            scanWithAnyline(context);
                           }),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFF89E31),
