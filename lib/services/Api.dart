@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Api {
   Dio dio = Dio();
 
-  String swtichDuty = 'https://nakacheck.azurewebsites.net/auth/onoffduty/';
-
+  String swtichDuty = 'https://nakacheck-3.suhailahmad4.repl.co/alerts/auth/onoffduty/';
+String getalerts = "https://nakacheck-3.suhailahmad4.repl.co/alerts/get/vehicle/";
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
   String spot =
@@ -26,6 +26,10 @@ class Api {
   }
 
   updatelocation() async {}
+
+  // getAlerts(String vehicle_number){
+    
+  // }
 
   Future<String> spotted(String numberPlate) async {
     final prefs = await SharedPreferences.getInstance();

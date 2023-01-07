@@ -170,7 +170,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                                               SvgPicture.asset(alerts
                                                               .value[index]
                                                           ["alert_type"] ==
-                                                      "Red Alert"
+                                                      "High Alert"
                                                   ? "assets/images/alert_red.svg"
                                                   : "assets/images/alert_yellow.svg"),
                                               Expanded(
@@ -181,7 +181,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                                                     fontSize: 28,
                                                     color: alerts.value[index][
                                                                 "alert_type"] ==
-                                                            "Red Alert"
+                                                            "High Alert"
                                                         ? ColorConstant.red300
                                                         : ColorConstant
                                                             .yellow800,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:toast/toast.dart';
 
 class Alert extends StatefulWidget {
   String numberplate;
@@ -26,7 +27,16 @@ class _AlertState extends State<Alert> {
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstant.red300),
-                onPressed: (() {}),
+                onPressed: (() async {
+                  ToastContext().init(context);
+                  Api api = Api();
+                  String res = await api.report("widget.vehicle.number" ?? "");
+                  if (res == 'success') {
+                    Toast.show("Alerted",
+                        duration: Toast.lengthLong, gravity: Toast.bottom);
+                    Navigator.pop(context);
+                  }
+                }),
                 child: Container(
                     height: 48,
                     width: 130,
@@ -37,7 +47,16 @@ class _AlertState extends State<Alert> {
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConstant.switchGreen),
-                onPressed: (() {}),
+                onPressed: (() async {
+                  ToastContext().init(context);
+                  Api api = Api();
+                  String res = await api.spotted("widget.vehicle.number" ?? "");
+                  if (res == 'success') {
+                    Toast.show("Alerted",
+                        duration: Toast.lengthLong, gravity: Toast.bottom);
+                    Navigator.pop(context);
+                  }
+                }),
                 child: Container(
                     height: 48,
                     width: 130,

@@ -117,29 +117,6 @@ class LoginPageOneScreen extends StatelessWidget {
                               labelText: 'Password',
                               hintText: 'Must be 6 characters long'),
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: getPadding(
-                              top: 37,
-                            ),
-                            child: Text(
-                              "Forgot password?",
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: ColorConstant.yellow800,
-                                fontSize: getFontSize(
-                                  14,
-                                ),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                                letterSpacing: 0.10,
-                                height: 1.50,
-                              ),
-                            ),
-                          ),
-                        ),
                         GestureDetector(
                           onTap: (() async {
                             if (_email.text.isEmpty ||
@@ -173,7 +150,7 @@ class LoginPageOneScreen extends StatelessWidget {
                               // prefs.setString("on-duty",
                               //     jsonDecode(res.toString())['on-duty']);
                               prefs.setBool(
-                                  "duty", jsonDecode(res.toString())['duty']);
+                                  "duty", jsonDecode(res.toString())['onDuty']);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

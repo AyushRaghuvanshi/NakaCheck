@@ -17,6 +17,7 @@ class EmailTextArea extends StatefulWidget {
 }
 
 class _EmailTextAreaState extends State<EmailTextArea> {
+  bool obscure = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,12 +30,23 @@ class _EmailTextAreaState extends State<EmailTextArea> {
             }
           },
           controller: widget.controller,
-          obscureText: (widget.labelText == 'Password') ? true : false,
+          obscureText: (widget.labelText == 'Password') ? obscure : false,
           keyboardType: TextInputType.emailAddress,
           // style: bodyMedium(),
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
             // hintStyle: bodyMedium(),
+            suffixIcon: (widget.labelText != 'Password')
+                ? null
+                : IconButton(
+                    icon:
+                        Icon(obscure ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        obscure = !obscure;
+                      });
+                    },
+                  ),
             labelText: widget.labelText,
             hintText: widget.hintText,
             // labelStyle: labelMedium(),
