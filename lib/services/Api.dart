@@ -12,12 +12,8 @@ class Api {
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
   Future<String> switchduty() async {
-    final prefs = await SharedPreferences.getInstance();
-    dio.options.headers["Authorization"] =
-        "Bearer ${prefs.getString('access')}";
     Response res = await dio.put(swtichDuty,
         options: Options(validateStatus: (status) => true));
-    log("On-Off Duty" + res.toString());
     if (res.statusCode == 200) {
       return 'success';
     } else {
@@ -26,6 +22,31 @@ class Api {
   }
 
   updatelocation() async {}
+
+  Future<String> spotted(String numberPlate) async {
+    final prefs = await SharedPreferences.getInstance();
+    dio.options.headers["Authorization"] =
+        "Bearer ${prefs.getString('access')}";
+    Response res = await dio.post(spot, data: {"vehicle_number": numberPlate});
+    if (res.statusCode == 200) {
+      return 'success';
+    } else {
+      return 'failed';
+    }
+  }
+
+  Future<String> report(String numberPlate) async {
+    final prefs = await SharedPreferences.getInstance();
+    dio.options.headers["Authorization"] =
+        "Bearer ${prefs.getString('access')}";
+    Response res = await dio.post(alert, data: {"vehicle_number": numberPlate});
+    log(res.statusCode.toString());
+    if (res.statusCode == 201) {
+      return 'success';
+    } else {
+      return 'failed';
+    }
+  }
 
   Future<Map<String, dynamic>> chksus(String numberPlate) async {
     final prefs = await SharedPreferences.getInstance();
