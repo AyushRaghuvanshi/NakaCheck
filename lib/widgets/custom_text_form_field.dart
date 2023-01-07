@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class EmailTextArea extends StatefulWidget {
   final String labelText;
   final String hintText;
+
   TextEditingController controller = TextEditingController();
   final Color fontColor = Colors.black;
 
@@ -17,6 +18,7 @@ class EmailTextArea extends StatefulWidget {
 }
 
 class _EmailTextAreaState extends State<EmailTextArea> {
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,7 +31,7 @@ class _EmailTextAreaState extends State<EmailTextArea> {
             }
           },
           controller: widget.controller,
-          obscureText: (widget.labelText == 'Password') ? true : false,
+          obscureText: (widget.labelText == 'Password') ? obscureText : false,
           keyboardType: TextInputType.emailAddress,
           // style: bodyMedium(),
           decoration: InputDecoration(
@@ -37,6 +39,15 @@ class _EmailTextAreaState extends State<EmailTextArea> {
             // hintStyle: bodyMedium(),
             labelText: widget.labelText,
             hintText: widget.hintText,
+            suffixIcon: IconButton(
+              icon:
+                  Icon((obscureText) ? Icons.visibility_off : Icons.visibility),
+              onPressed: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+            ),
             // labelStyle: labelMedium(),
             errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),

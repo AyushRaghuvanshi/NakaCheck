@@ -9,6 +9,7 @@ import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:toast/toast.dart';
 
 class RedirectionAlert extends StatefulWidget {
   RedirectionAlert({Key? key, required this.sus, required this.vehicle})
@@ -21,39 +22,63 @@ class RedirectionAlert extends StatefulWidget {
 
 class _RedirectionAlertState extends State<RedirectionAlert> {
   @override
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(builder: (context, snapshot) {
       if (!snapshot.hasData) {
         return Scaffold(
-          bottomNavigationBar: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: (widget.sus)
-                            ? ColorConstant.red300
-                            : ColorConstant.switchGreen),
-                    onPressed: (() {}),
-                    child: Container(
-                        height: 48,
-                        width: 130,
-                        child: Center(child: Text('SPOTTED')))),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorConstant.switchGreen),
-                    onPressed: (() {}),
-                    child: Container(
-                        height: 48,
-                        width: 130,
-                        child: Center(child: Text('CAUGHT')))),
-              )
-            ],
-          ),
+          bottomNavigationBar: (!widget.sus)
+              ? null
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ColorConstant.red300,
+                          ),
+                          onPressed: (() async {
+                            ToastContext().init(context);
+                            Api api = Api();
+                            String res =
+                                await api.report(widget.vehicle.number ?? "");
+                            if (res == 'success') {
+                              Toast.show("Alerted",
+                                  duration: Toast.lengthLong,
+                                  gravity: Toast.bottom);
+                              Navigator.pop(context);
+                            }
+                          }),
+                          child: Container(
+                              height: 48,
+                              width: 130,
+                              child: Center(child: Text('SPOTTED')))),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorConstant.switchGreen),
+                          onPressed: (() async {
+                            ToastContext().init(context);
+                            Api api = Api();
+                            String res =
+                                await api.spotted(widget.vehicle.number ?? "");
+                            if (res == 'success') {
+                              Toast.show("Caught",
+                                  duration: Toast.lengthLong,
+                                  gravity: Toast.bottom);
+                              Navigator.pop(context);
+                            }
+                          }),
+                          child: Container(
+                              height: 48,
+                              width: 130,
+                              child: Center(child: Text('CAUGHT')))),
+                    )
+                  ],
+                ),
           backgroundColor: ColorConstant.gray900,
           appBar: AppBar(
             toolbarHeight: 70,
@@ -83,9 +108,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                         value: App.onduty,
                         activeTrackColor: ColorConstant.switchGreen,
                         activeColor: Colors.white,
-                        inactiveTrackColor: (widget.sus)
-                            ? ColorConstant.red300
-                            : ColorConstant.switchGreen,
+                        inactiveTrackColor: ColorConstant.red300,
                         onChanged: ((value) async {
                           setState(() {
                             App.onduty = !App.onduty;
@@ -101,14 +124,11 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                     Text(
                       App.onduty ? "On-Duty" : "Off-Duty",
                       style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: 13,
-                        color: App.onduty
-                            ? ColorConstant.switchGreen
-                            : (widget.sus)
-                                ? ColorConstant.red300
-                                : ColorConstant.switchGreen,
-                      ),
+                          fontFamily: "Poppins",
+                          fontSize: 13,
+                          color: App.onduty
+                              ? ColorConstant.switchGreen
+                              : ColorConstant.red300),
                     )
                   ],
                 ),
@@ -133,8 +153,8 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                         color: (widget.sus)
                             ? (widget.sus)
                                 ? ColorConstant.red300
-                                : ColorConstant.switchGreen
-                            : ColorConstant.switchGreen),
+                                : ColorConstant.yellow800
+                            : ColorConstant.yellow800),
                   ),
                   Divider(
                     thickness: 1,
@@ -146,11 +166,11 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                         child: Row(
                           children: [
                             Container(
-                              color: (widget.sus)
-                                  ? (widget.sus)
-                                      ? ColorConstant.red300
-                                      : ColorConstant.switchGreen
-                                  : ColorConstant.switchGreen,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://nakacheck-3.suhailahmad4.repl.co/" +
+                                              (widget.vehicle.picture ?? "")))),
                               height: 206,
                               width: 136,
                             ),
@@ -173,7 +193,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                                       ? ColorConstant.red300
                                                       : ColorConstant
                                                           .switchGreen
-                                                  : ColorConstant.switchGreen),
+                                                  : ColorConstant.yellow800),
                                         ),
                                         Text(widget.vehicle.company ?? "",
                                             style: TextStyle(fontSize: 14)),
@@ -190,9 +210,9 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                               fontSize: 14,
                                               color: (widget.sus)
                                                   ? ColorConstant.red300
-                                                  : ColorConstant.switchGreen),
+                                                  : ColorConstant.yellow800),
                                         ),
-                                        Text('remove',
+                                        Text(widget.vehicle.model ?? "",
                                             style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
@@ -207,7 +227,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                               fontSize: 14,
                                               color: (widget.sus)
                                                   ? ColorConstant.red300
-                                                  : ColorConstant.switchGreen),
+                                                  : ColorConstant.yellow800),
                                         ),
                                         Text(widget.vehicle.color ?? "",
                                             style: TextStyle(fontSize: 14)),
@@ -224,7 +244,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                               fontSize: 14,
                                               color: (widget.sus)
                                                   ? ColorConstant.red300
-                                                  : ColorConstant.switchGreen),
+                                                  : ColorConstant.yellow800),
                                         ),
                                         Text(widget.vehicle.regDate ?? "",
                                             style: TextStyle(fontSize: 14)),
@@ -241,7 +261,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                               fontSize: 14,
                                               color: (widget.sus)
                                                   ? ColorConstant.red300
-                                                  : ColorConstant.switchGreen),
+                                                  : ColorConstant.yellow800),
                                         ),
                                         Container(
                                           width: 53,
@@ -271,7 +291,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                     style: TextStyle(
                                         color: (widget.sus)
                                             ? ColorConstant.red300
-                                            : ColorConstant.switchGreen),
+                                            : ColorConstant.yellow800),
                                   ),
                                   Text('Vehicle Spotted at IMS'),
                                 ],
