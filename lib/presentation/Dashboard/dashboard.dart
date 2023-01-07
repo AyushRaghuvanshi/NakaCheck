@@ -7,6 +7,7 @@ import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:nakacheck/services/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../core/utils/size_utils.dart';
 
@@ -136,6 +137,8 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
+                          ref.watch(numberPlate.notifier).state =
+                              alerts.value[index]["vehicle_number"];
                           Navigator.push(
                             context,
                             MaterialPageRoute(

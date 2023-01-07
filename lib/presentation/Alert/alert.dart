@@ -1,23 +1,26 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/services/Api.dart';
+import 'package:nakacheck/services/provider.dart';
 import 'package:toast/toast.dart';
 
-class Alert extends StatefulWidget {
+class Alert extends ConsumerStatefulWidget {
   String numberplate;
   Alert({Key? key, required this.numberplate}) : super(key: key);
 
   @override
-  State<Alert> createState() => _AlertState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AlertState();
 }
 
-class _AlertState extends State<Alert> {
+class _AlertState extends ConsumerState<Alert> {
   Api api = Api();
   @override
   Widget build(BuildContext context) {
+    final data = ref.watch(alertsprov);
     return Scaffold(
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -262,24 +265,62 @@ class _AlertState extends State<Alert> {
                           ),
                           Container(
                             height: 250,
-                            child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        '13:01 - ',
-                                        style: TextStyle(
-                                            color: ColorConstant.red300),
+                            child: Container(
+                                child: data.when(
+                              data: (data) {
+                                log(data.toString());
+
+                                return ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    int timecolon = data[index]['time']
+                                        .toString()
+                                        .indexOf(':');
+                                    String time = data[index]['time']
+                                            .toString()
+                                            .substring(
+                                                timecolon - 2, timecolon) +
+                                        data[index]['time']
+                                            .toString()
+                                            .substring(
+                                                timecolon, timecolon + 3);
+                                    String location = data[index]
+                                                ['sender_location']
+                                            .toString()
+                                            .split(',')[0] +
+                                        data[index]['sender_location']
+                                            .toString()
+                                            .split(',')[1];
+                                    log(location);
+                                    return Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              '${time} - ',
+                                              style: TextStyle(
+                                                  color: (snap['Suspicious'] ==
+                                                          "True")
+                                                      ? ColorConstant.red300
+                                                      : ColorConstant
+                                                          .yellow800),
+                                            ),
+                                            Text(
+                                                'Vehicle Spotted at ${location}'),
+                                          ],
+                                        ),
                                       ),
-                                      Text('Vehicle Spotted at IMS'),
-                                    ],
-                                  ),
+                                    );
+                                  },
+                                  itemCount: data.length,
                                 );
                               },
-                              itemCount: 100,
-                            ),
+                              error: (error, stackTrace) {},
+                              loading: () => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )),
                           )
                         ],
                       )
