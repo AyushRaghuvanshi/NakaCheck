@@ -38,8 +38,7 @@ class Search extends StatelessWidget {
           res['data']['color'],
           res['data']['registrationDate'],
           res['data']['registrationUnder'],
-          res['data']['picture'],
-          res['data']['model']);
+          res['data']['picture']);
       if (res['Suspicious'] == 'True') {
         Navigator.push(
             context,
@@ -142,8 +141,7 @@ class Search extends StatelessWidget {
                           res['data']['color'],
                           res['data']['registrationDate'],
                           res['data']['registeredUnder'],
-                          res['data']['picture'],
-                          res['data']['model']);
+                          res['data']['picture']);
                       if (res['Suspicious'] == 'True') {
                         Navigator.push(
                             context,
