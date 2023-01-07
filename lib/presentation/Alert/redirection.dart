@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/models/vehicle.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
@@ -79,7 +80,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Switch(
-                        value: switchState,
+                        value: App.onduty,
                         activeTrackColor: ColorConstant.switchGreen,
                         activeColor: Colors.white,
                         inactiveTrackColor: (widget.sus)
@@ -87,7 +88,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                             : ColorConstant.switchGreen,
                         onChanged: ((value) async {
                           setState(() {
-                            switchState = !switchState;
+                            App.onduty = !App.onduty;
                           });
                           Api api = Api();
                           String result = await api.switchduty();
@@ -98,11 +99,11 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                           // log("u naughty");
                         })),
                     Text(
-                      switchState ? "On-Duty" : "Off-Duty",
+                      App.onduty ? "On-Duty" : "Off-Duty",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 13,
-                        color: switchState
+                        color: App.onduty
                             ? ColorConstant.switchGreen
                             : (widget.sus)
                                 ? ColorConstant.red300
@@ -174,7 +175,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                                           .switchGreen
                                                   : ColorConstant.switchGreen),
                                         ),
-                                        Text(widget.vehicle.company??"",
+                                        Text(widget.vehicle.company ?? "",
                                             style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
@@ -208,7 +209,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                                   ? ColorConstant.red300
                                                   : ColorConstant.switchGreen),
                                         ),
-                                        Text(widget.vehicle.color??"",
+                                        Text(widget.vehicle.color ?? "",
                                             style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
@@ -225,7 +226,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                                   ? ColorConstant.red300
                                                   : ColorConstant.switchGreen),
                                         ),
-                                        Text(widget.vehicle.regDate??"",
+                                        Text(widget.vehicle.regDate ?? "",
                                             style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
@@ -244,7 +245,8 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                                         ),
                                         Container(
                                           width: 53,
-                                          child: Text(widget.vehicle.regUnder??"",
+                                          child: Text(
+                                              widget.vehicle.regUnder ?? "",
                                               style: TextStyle(fontSize: 14)),
                                         ),
                                       ],

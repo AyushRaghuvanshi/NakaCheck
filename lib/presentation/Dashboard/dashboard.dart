@@ -4,10 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
-import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
-import 'package:nakacheck/services/Api.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../core/utils/size_utils.dart';
 
@@ -18,16 +15,13 @@ class DashBoard extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _DashBoardState();
 }
 
-bool switchState = false;
-
 class _DashBoardState extends ConsumerState<DashBoard> {
   late TextEditingController _numberplate;
-  bool switchState = false;
   @override
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
-    App.sendLatLong();
+    // App.sendLatLong();
     super.initState();
   }
 
@@ -54,7 +48,6 @@ class _DashBoardState extends ConsumerState<DashBoard> {
             "assets/images/assam_logo.png",
           ),
         ),
-        elevation: 0,
         title: Text(
           "Jai Hind ${App.name}",
           style: TextStyle(
@@ -74,16 +67,12 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
-                    onChanged: ((value) async {
+                    onChanged: ((value) {
                       setState(() {
                         App.onduty = !App.onduty;
                       });
-                      Api api = Api();
-                      String result = await api.switchduty();
-                      if (result != 'success') {
-                        return;
-                      }
-                      // log("u naughty");
+
+                      log("u naughty");
                     })),
                 Text(
                   App.onduty ? "On-Duty" : "Off-Duty",
@@ -130,32 +119,41 @@ class _DashBoardState extends ConsumerState<DashBoard> {
               thickness: 1,
             ),
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      log("clicked at $index");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Container(
-                          height: 156,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: ColorConstant.boxBackBlack,
-                              border:
-                                  Border.all(color: ColorConstant.boxBackBlack),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.83,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
+              child: alerts.when(
+                data: (data) => SmartRefresher(
+                  enablePullDown: true,
+                  controller: _refreshController,
+                  onRefresh: () async {
+                    ref.refresh(App.alertGetProvider);
+                    await Future.delayed(Duration(seconds: 1));
+                    _refreshController.refreshCompleted();
+                  },
+                  child: ListView.builder(
+                    itemCount: alerts.value.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          log("clicked at index");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Container(
+                              height: 156,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: ColorConstant.boxBackBlack,
+                                  border: Border.all(
+                                      color: ColorConstant.boxBackBlack),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.83,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
                                         children: [
                                           Row(
                                             children: [

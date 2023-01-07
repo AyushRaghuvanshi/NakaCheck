@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
 import 'package:nakacheck/services/Api.dart';
@@ -74,13 +75,13 @@ class _AlertState extends State<Alert> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Switch(
-                        value: switchState,
+                        value: App.onduty,
                         activeTrackColor: ColorConstant.switchGreen,
                         activeColor: Colors.white,
                         inactiveTrackColor: ColorConstant.red300,
                         onChanged: ((value) async {
                           setState(() {
-                            switchState = !switchState;
+                            App.onduty = !App.onduty;
                           });
                           Api api = Api();
                           String result = await api.switchduty();
@@ -91,11 +92,11 @@ class _AlertState extends State<Alert> {
                           // log("u naughty");
                         })),
                     Text(
-                      switchState ? "On-Duty" : "Off-Duty",
+                      App.onduty ? "On-Duty" : "Off-Duty",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontSize: 13,
-                        color: switchState
+                        color: App.onduty
                             ? ColorConstant.switchGreen
                             : ColorConstant.red300,
                       ),
