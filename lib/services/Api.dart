@@ -1,13 +1,14 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
   Dio dio = Dio();
 
-  String swtichDuty = 'https://nakacheck-3.suhailahmad4.repl.co/alerts/auth/onoffduty/';
-String getalerts = "https://nakacheck-3.suhailahmad4.repl.co/alerts/get/vehicle/";
+  String swtichDuty =
+      'https://nakacheck-3.suhailahmad4.repl.co/auth/onoffduty/';
+  String getalerts =
+      "https://nakacheck-3.suhailahmad4.repl.co/alerts/get/vehicle/";
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
   String spot =
@@ -16,8 +17,13 @@ String getalerts = "https://nakacheck-3.suhailahmad4.repl.co/alerts/get/vehicle/
   String alert =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/reportSuspicious/";
   Future<String> switchduty() async {
-    Response res = await dio.put(swtichDuty,
+    final prefs = await SharedPreferences.getInstance();
+    dio.options.headers["Authorization"] =
+        "Bearer ${prefs.getString('access')}";
+    Response res = await dio.patch(swtichDuty,
         options: Options(validateStatus: (status) => true));
+    log("On-Off Duty" + res.toString());
+    prefs.setBool("duty", !prefs.getBool("duty")!);
     if (res.statusCode == 200) {
       return 'success';
     } else {
@@ -28,7 +34,7 @@ String getalerts = "https://nakacheck-3.suhailahmad4.repl.co/alerts/get/vehicle/
   updatelocation() async {}
 
   // getAlerts(String vehicle_number){
-    
+
   // }
 
   Future<String> spotted(String numberPlate) async {

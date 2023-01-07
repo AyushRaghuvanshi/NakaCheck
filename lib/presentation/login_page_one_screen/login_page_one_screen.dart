@@ -147,8 +147,6 @@ class LoginPageOneScreen extends StatelessWidget {
                               App.name = jsonDecode(res.toString())['name'];
                               await App.dutyCheck();
 
-                              // prefs.setString("on-duty",
-                              //     jsonDecode(res.toString())['on-duty']);
                               prefs.setBool(
                                   "duty", jsonDecode(res.toString())['onDuty']);
                               Navigator.push(
