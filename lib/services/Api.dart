@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -10,9 +11,14 @@ class Api {
       'https://nakacheck-3.suhailahmad4.repl.co/auth/onoffduty/';
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
+
   Future<String> switchduty() async {
+    final prefs = await SharedPreferences.getInstance();
+    dio.options.headers["Authorization"] =
+        "Bearer ${prefs.getString('access')}";
     Response res = await dio.put(swtichDuty,
         options: Options(validateStatus: (status) => true));
+    log("On-Off Duty" + res.toString());
     if (res.statusCode == 200) {
       return 'success';
     } else {

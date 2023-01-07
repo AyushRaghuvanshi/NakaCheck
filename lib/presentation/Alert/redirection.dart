@@ -79,15 +79,12 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
                         ? ColorConstant.red300
                         : ColorConstant.switchGreen,
                     onChanged: ((value) async {
+                      Api api = Api();
+                      api.switchduty();
+
                       setState(() {
                         App.onduty = !App.onduty;
                       });
-                      Api api = Api();
-                      String result = await api.switchduty();
-                      if (result != 'success') {
-                        return;
-                      }
-
                     })),
                 Text(
                   App.onduty ? "On-Duty" : "Off-Duty",

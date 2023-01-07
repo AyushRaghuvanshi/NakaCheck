@@ -76,13 +76,12 @@ class _AlertState extends State<Alert> {
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
                     onChanged: ((value) async {
+                      Api api = Api();
+                      api.switchduty();
+
                       setState(() {
                         App.onduty = !App.onduty;
                       });
-                      String result = await api.switchduty();
-                      if (result != 'success') {
-                        return;
-                      }
                     })),
                 Text(
                   App.onduty ? "On-Duty" : "Off-Duty",

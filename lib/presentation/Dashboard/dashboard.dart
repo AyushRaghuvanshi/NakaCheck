@@ -69,12 +69,10 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
-                    onChanged: ((value) async {
+                    onChanged: ((value) {
                       Api api = Api();
-                      String result = await api.switchduty();
-                      if (result != 'success') {
-                        return;
-                      }
+                      api.switchduty();
+
                       setState(() {
                         App.onduty = !App.onduty;
                       });
