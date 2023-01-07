@@ -32,20 +32,20 @@ class App {
       dio.options.headers["Authorization"] =
           "Bearer ${prefs.getString("access")}";
 
-      log("sending data fcm - ${prefs.getString("fcm_token")} \n lat - $lattitude \n long - $longitude");
-      Response res =
-          await dio.patch('https://nakacheck.azurewebsites.net/auth/alert/',
-              data: {
-                "alert_id": prefs.getString("fcm_token"),
-                "lattitude": lattitude.toString(),
-                "longitude": longitude.toString()
-              },
-              options: Options(
-                headers: {"content-Type": "application/json"},
-                validateStatus: (status) => true,
-              ));
+      log("sending data fcm - ${prefs.getString("fcm_token")} \n lat - ${lattitude!.toStringAsFixed(4)} \n long - ${longitude!.toStringAsFixed(4)}");
+      Response res = await dio.patch(
+          'https://nakacheck-3.suhailahmad4.repl.co/auth/alert/',
+          data: {
+            "alert_id": prefs.getString("fcm_token"),
+            "lattitude": lattitude.toStringAsFixed(4),
+            "longitude": longitude.toStringAsFixed(4)
+          },
+          options: Options(
+            headers: {"content-Type": "application/json"},
+            validateStatus: (status) => true,
+          ));
 
-      if (res.statusCode == 201) {
+      if (res.statusCode == 200) {
         log("successful sent $res");
       } else {
         log("failed $res ${res.statusCode}");

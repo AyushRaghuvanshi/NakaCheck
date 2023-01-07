@@ -5,7 +5,7 @@ import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import '../../core/utils/size_utils.dart';
-
+  
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
 
