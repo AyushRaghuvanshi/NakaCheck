@@ -166,66 +166,67 @@ class _LoginPageOneScreenState extends State<LoginPageOneScreen> {
                                           jsonDecode(res.toString())['name'];
                                       await App.dutyCheck();
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DashBoard(),
-                                ),
-                              );
-                            } else {
-                              log("failed $res");
-                            }
-                            //Demo
-                          }),
-                          child: Container(
-                            width: getHorizontalSize(
-                              328.00,
-                            ),
-                            margin: getMargin(
-                              top: 13,
-                            ),
-                            padding: getPadding(
-                              left: 139,
-                              top: 9,
-                              right: 139,
-                              bottom: 9,
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.yellow800,
-                              borderRadius: BorderRadius.circular(
-                                getHorizontalSize(
-                                  8.00,
-                                ),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: getPadding(
-                                    top: 5,
-                                  ),
-                                  child: Text(
-                                    "Log In",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: ColorConstant.whiteA700,
-                                      fontSize: getFontSize(
-                                        16,
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DashBoard(),
+                                        ),
+                                      );
+                                    } else {
+                                      log("failed $res");
+                                    }
+                                    //Demo
+                                  }),
+                                  child: Container(
+                                    width: getHorizontalSize(
+                                      328.00,
+                                    ),
+                                    margin: getMargin(
+                                      top: 13,
+                                    ),
+                                    padding: getPadding(
+                                      left: 139,
+                                      top: 9,
+                                      right: 139,
+                                      bottom: 9,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: ColorConstant.yellow800,
+                                      borderRadius: BorderRadius.circular(
+                                        getHorizontalSize(
+                                          8.00,
+                                        ),
                                       ),
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: 0.15,
-                                      height: 1.50,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: getPadding(
+                                            top: 5,
+                                          ),
+                                          child: Text(
+                                            "Log In",
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              color: ColorConstant.whiteA700,
+                                              fontSize: getFontSize(
+                                                16,
+                                              ),
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 0.15,
+                                              height: 1.50,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),

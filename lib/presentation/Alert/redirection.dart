@@ -302,7 +302,7 @@ class _RedirectionAlertState extends State<RedirectionAlert> {
             ),
           ),
         ),
-      ),
+      ),;
     );
   }
 }
