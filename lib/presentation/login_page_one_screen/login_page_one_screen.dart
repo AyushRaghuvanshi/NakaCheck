@@ -149,7 +149,7 @@ class LoginPageOneScreen extends StatelessWidget {
                             Dio dio = Dio();
                             log("signing in");
                             Response res = await dio.post(
-                                'https://nakacheck.onrender.com/auth/login/',
+                                'https://nakacheck-3.suhailahmad4.repl.co/auth/login/',
                                 data: {
                                   "userID": _email.text,
                                   "password": _password.text
@@ -165,6 +165,9 @@ class LoginPageOneScreen extends StatelessWidget {
                                   await SharedPreferences.getInstance();
                               prefs.setString("access",
                                   jsonDecode(res.toString())['access']);
+                              prefs.setString(
+                                  "name", jsonDecode(res.toString())['name']);
+                              App.name = jsonDecode(res.toString())['name'];
                               await App.dutyCheck();
 
                               // prefs.setString("on-duty",

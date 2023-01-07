@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/notifications/notification_handler.dart';
 import 'package:nakacheck/presentation/Dashboard/dashboard.dart';
@@ -15,9 +16,8 @@ void main() async {
   await Firebase.initializeApp();
   await App.loginCheck();
   await App.dutyCheck();
-
   FlutterNativeSplash.remove();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {

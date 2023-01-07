@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
@@ -7,30 +8,26 @@ import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import 'package:nakacheck/services/Api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../core/utils/size_utils.dart';
-  
-class DashBoard extends StatefulWidget {
-  const DashBoard({Key? key}) : super(key: key);
+
+class DashBoard extends ConsumerStatefulWidget {
+  const DashBoard();
 
   @override
-  State<DashBoard> createState() => _DashBoardState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DashBoardState();
 }
 
 bool switchState = false;
 
-class _DashBoardState extends State<DashBoard> {
+class _DashBoardState extends ConsumerState<DashBoard> {
   late TextEditingController _numberplate;
-  getduty() async{
-    final prefs = await SharedPreferences.getInstance();
-    switchState = await prefs.getBool('duty') ?? false;
-  }
-
+  bool switchState = false;
   @override
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
     App.sendLatLong();
-    getduty();
     super.initState();
   }
 
@@ -43,6 +40,9 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    RefreshController _refreshController = RefreshController();
+    AsyncValue<dynamic> alerts = ref.watch(App.alertGetProvider);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -56,7 +56,7 @@ class _DashBoardState extends State<DashBoard> {
         ),
         elevation: 0,
         title: Text(
-          "Jai Hind XYZ",
+          "Jai Hind ${App.name}",
           style: TextStyle(
               fontSize: 20,
               fontFamily: "Poppins",
@@ -70,13 +70,13 @@ class _DashBoardState extends State<DashBoard> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Switch(
-                    value: switchState,
+                    value: App.onduty,
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
                     onChanged: ((value) async {
                       setState(() {
-                        switchState = !switchState;
+                        App.onduty = !App.onduty;
                       });
                       Api api = Api();
                       String result = await api.switchduty();
@@ -86,11 +86,11 @@ class _DashBoardState extends State<DashBoard> {
                       // log("u naughty");
                     })),
                 Text(
-                  switchState ? "On-Duty" : "Off-Duty",
+                  App.onduty ? "On-Duty" : "Off-Duty",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 13,
-                    color: switchState
+                    color: App.onduty
                         ? ColorConstant.switchGreen
                         : ColorConstant.red300,
                   ),
@@ -135,11 +135,6 @@ class _DashBoardState extends State<DashBoard> {
                   return GestureDetector(
                     onTap: () {
                       log("clicked at $index");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Alert(),
-                          ));
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -162,48 +157,66 @@ class _DashBoardState extends State<DashBoard> {
                                     children: [
                                       Row(
                                         children: [
-                                          SvgPicture.asset(
-                                              "assets/images/alert.svg"),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(alerts
+                                                              .value[index]
+                                                          ["alert_type"] ==
+                                                      "Red Alert"
+                                                  ? "assets/images/alert_red.svg"
+                                                  : "assets/images/alert_yellow.svg"),
+                                              Expanded(
+                                                child: Text(
+                                                  "${alerts.value[index]["vehicle_number"].toString()}",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 28,
+                                                    color: alerts.value[index][
+                                                                "alert_type"] ==
+                                                            "Red Alert"
+                                                        ? ColorConstant.red300
+                                                        : ColorConstant
+                                                            .yellow800,
+                                                    fontFamily: "Poppins",
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                           Expanded(
-                                            child: Text(
-                                              "UP 14 AK $index",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 28,
-                                                color: ColorConstant.red300,
-                                                fontFamily: "Poppins",
+                                            child: Center(
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  "The Vehicle Was Spotted At ${alerts.value[index]["sender_location"].split(",")[0]} , ${alerts.value[index]["sender_location"].split(",")[1]}",
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 18),
+                                                ),
                                               ),
                                             ),
                                           )
                                         ],
                                       ),
-                                      Expanded(
-                                        child: Center(
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              "The Vehicle Was Spotted At Dasna",
-                                              style: TextStyle(
-                                                  fontFamily: "Poppins",
-                                                  fontSize: 18),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: ColorConstant.boxArrowColor,
-                              )
-                            ],
-                          )),
-                    ),
-                  );
-                },
-                itemCount: 10,
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    color: ColorConstant.boxArrowColor,
+                                  )
+                                ],
+                              )),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                loading: () => Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (error, stackTrace) => Center(
+                  child: Text("Error"),
+                ),
               ),
             )
           ],
