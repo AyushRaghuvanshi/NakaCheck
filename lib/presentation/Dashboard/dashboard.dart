@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,8 +6,10 @@ import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
+import 'package:nakacheck/presentation/login_page_one_screen/login_page_one_screen.dart';
 import 'package:nakacheck/services/Api.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/utils/size_utils.dart';
 
 class DashBoard extends ConsumerStatefulWidget {
@@ -33,20 +36,74 @@ class _DashBoardState extends ConsumerState<DashBoard> {
     _numberplate.dispose();
   }
 
+  RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
-    RefreshController _refreshController = RefreshController();
     AsyncValue<dynamic> alerts = ref.watch(App.alertGetProvider);
 
     return Scaffold(
+      drawer: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Theme(
+          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+          child: Stack(children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            ),
+            Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  "\"A Soldier Is Never Out Of Duty\"",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 35,
+                      color: ColorConstant.yellow800),
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      if (prefs.getBool("duty")!) {
+                        Api api = Api();
+                        api.switchduty();
+                        prefs.clear();
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginPageOneScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Log Out",
+                      style: TextStyle(color: Colors.black),
+                    ))
+              ],
+            )),
+          ]),
+        ),
+      ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 70,
         backgroundColor: ColorConstant.gray900,
         leadingWidth: 72,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
-          child: Image.asset(
-            "assets/images/assam_logo.png",
+          child: Builder(
+            builder: (context) {
+              return GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: Image.asset(
+                  "assets/images/assam_logo.png",
+                ),
+              );
+            },
           ),
         ),
         title: Text(

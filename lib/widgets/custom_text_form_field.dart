@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nakacheck/core/utils/color_constant.dart';
 
 class EmailTextArea extends StatefulWidget {
   final String labelText;
@@ -39,8 +40,10 @@ class _EmailTextAreaState extends State<EmailTextArea> {
             suffixIcon: (widget.labelText != 'Password')
                 ? null
                 : IconButton(
-                    icon:
-                        Icon(obscure ? Icons.visibility_off : Icons.visibility),
+                    icon: Icon(
+                      obscure ? Icons.visibility_off : Icons.visibility,
+                      color: ColorConstant.whiteA700,
+                    ),
                     onPressed: () {
                       setState(() {
                         obscure = !obscure;

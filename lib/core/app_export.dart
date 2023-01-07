@@ -24,7 +24,7 @@ class App {
 
   static Future<void> dutyCheck() async {
     final prefs = await SharedPreferences.getInstance();
-    App.onduty = prefs.getBool("duty")!;
+    App.onduty = prefs.getBool("duty") ?? false;
   }
 
   static Future<void> sendLatLong() async {
