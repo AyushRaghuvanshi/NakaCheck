@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
+import 'package:nakacheck/presentation/Alert/alert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
+import 'package:nakacheck/services/Api.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../core/utils/size_utils.dart';
 
@@ -21,7 +23,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
   void initState() {
     // TODO: implement initState
     _numberplate = TextEditingController();
-    // App.sendLatLong();
+    App.sendLatLong();
     super.initState();
   }
 
@@ -49,7 +51,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
           ),
         ),
         title: Text(
-          "Jai Hind ${App.name}",
+          "${App.name}",
           style: TextStyle(
               fontSize: 20,
               fontFamily: "Poppins",
@@ -67,12 +69,15 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                     activeTrackColor: ColorConstant.switchGreen,
                     activeColor: Colors.white,
                     inactiveTrackColor: ColorConstant.red300,
-                    onChanged: ((value) {
+                    onChanged: ((value) async {
+                      Api api = Api();
+                      String result = await api.switchduty();
+                      if (result != 'success') {
+                        return;
+                      }
                       setState(() {
                         App.onduty = !App.onduty;
                       });
-
-                      log("u naughty");
                     })),
                 Text(
                   App.onduty ? "On-Duty" : "Off-Duty",
@@ -133,7 +138,14 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          log("clicked at index");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Alert(
+                                      numberplate: alerts.value[index]
+                                          ["vehicle_number"],
+                                    )),
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -165,7 +177,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                                                   : "assets/images/alert_yellow.svg"),
                                               Expanded(
                                                 child: Text(
-                                                  "${alerts.value[index]["vehicle_number"].toString()}",
+                                                  "${alerts.value[index]["vehicle_number"][0]}${alerts.value[index]["vehicle_number"][1]} ${alerts.value[index]["vehicle_number"][2]}${alerts.value[index]["vehicle_number"][3]} ${alerts.value[index]["vehicle_number"][4]}${alerts.value[index]["vehicle_number"][5]}${alerts.value[index]["vehicle_number"][6]}${alerts.value[index]["vehicle_number"][7]}",
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 28,

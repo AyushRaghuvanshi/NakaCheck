@@ -13,14 +13,13 @@ class App {
   static Future<void> loginCheck() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("name")) {
-      name = prefs.getString("access")!;
+      name = prefs.getString("name")!;
       log(prefs.getString("access").toString());
     }
     if (prefs.containsKey("access")) {
       log(prefs.getString("access").toString());
     }
     App.authorized = prefs.containsKey("access");
-    
   }
 
   static Future<void> dutyCheck() async {
@@ -42,17 +41,17 @@ class App {
           "Bearer ${prefs.getString("access")}";
 
       log("sending data fcm - ${prefs.getString("fcm_token")} \n lat - ${lattitude!.toStringAsFixed(4)} \n long - ${longitude!.toStringAsFixed(4)}");
-      Response res =
-          await dio.patch('https://nakacheck-3.suhailahmad4.repl.co/auth/alert',
-              data: {
-                "alert_id": prefs.getString("fcm_token"),
-                "lattitude": lattitude.toStringAsFixed(4),
-                "longitude": longitude.toStringAsFixed(4)
-              },
-              options: Options(
-                headers: {"content-Type": "application/json"},
-                validateStatus: (status) => true,
-              ));
+      Response res = await dio.patch(
+          'https://nakacheck-3.suhailahmad4.repl.co/auth/alert/',
+          data: {
+            "alert_id": prefs.getString("fcm_token"),
+            "lattitude": lattitude.toStringAsFixed(4),
+            "longitude": longitude.toStringAsFixed(4)
+          },
+          options: Options(
+            headers: {"content-Type": "application/json"},
+            validateStatus: (status) => true,
+          ));
 
       if (res.statusCode == 200) {
         log("successful sent lat long $res");

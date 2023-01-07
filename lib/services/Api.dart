@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Api {
   Dio dio = Dio();
 
-  String swtichDuty = 'https://nakacheck.azurewebsites.net/auth/onoffduty/';
+  String swtichDuty =
+      'https://nakacheck-3.suhailahmad4.repl.co/auth/onoffduty/';
   String chkSus =
       "https://nakacheck-3.suhailahmad4.repl.co/alerts/checkSuspicious/";
   Future<String> switchduty() async {
@@ -18,8 +19,6 @@ class Api {
       return 'failed';
     }
   }
-
-  updatelocation() async {}
 
   Future<Map<String, dynamic>> chksus(String numberPlate) async {
     final prefs = await SharedPreferences.getInstance();
