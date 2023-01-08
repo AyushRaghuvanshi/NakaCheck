@@ -234,7 +234,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
                                                   : "assets/images/alert_yellow.svg"),
                                               Expanded(
                                                 child: Text(
-                                                  "${alerts.value[index]["vehicle_number"][0]}${alerts.value[index]["vehicle_number"][1]} ${alerts.value[index]["vehicle_number"][2]}${alerts.value[index]["vehicle_number"][3]} ${alerts.value[index]["vehicle_number"][4]}${alerts.value[index]["vehicle_number"][5]}${alerts.value[index]["vehicle_number"][6]}${alerts.value[index]["vehicle_number"][7]}",
+                                                  "${alerts.value[index]["vehicle_number"][0]}${alerts.value[index]["vehicle_number"][1]} ${alerts.value[index]["vehicle_number"][2]}${alerts.value[index]["vehicle_number"][3]} ${alerts.value[index]["vehicle_number"][4]}${alerts.value[index]["vehicle_number"][5]} ${alerts.value[index]["vehicle_number"][6]}${alerts.value[index]["vehicle_number"][7]}${alerts.value[index]["vehicle_number"][8]}${alerts.value[index]["vehicle_number"][9]}",
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     fontSize: 28,
