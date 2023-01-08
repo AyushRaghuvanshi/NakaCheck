@@ -33,7 +33,7 @@ class _AlertState extends ConsumerState<Alert> {
                 onPressed: (() async {
                   ToastContext().init(context);
                   Api api = Api();
-                  String res = await api.report("widget.vehicle.number" ?? "");
+                  String res = await api.report(widget.numberplate);
                   if (res == 'success') {
                     Toast.show("Alerted",
                         duration: Toast.lengthLong, gravity: Toast.bottom);
@@ -53,7 +53,7 @@ class _AlertState extends ConsumerState<Alert> {
                 onPressed: (() async {
                   ToastContext().init(context);
                   Api api = Api();
-                  String res = await api.spotted("widget.vehicle.number" ?? "");
+                  String res = await api.spotted(widget.numberplate);
                   if (res == 'success') {
                     Toast.show("Alerted",
                         duration: Toast.lengthLong, gravity: Toast.bottom);
@@ -137,7 +137,7 @@ class _AlertState extends ConsumerState<Alert> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${snap['data']['number'][0]}${snap['data']['number'][1]} ${snap['data']['number'][2]}${snap['data']['number'][3]} ${snap['data']['number'][4]}${snap['data']['number'][5]}${snap['data']['number'][6]}${snap['data']['number'][7]}",
+                        "${snap['data']['number'][0]}${snap['data']['number'][1]} ${snap['data']['number'][2]}${snap['data']['number'][3]} ${snap['data']['number'][4]}${snap['data']['number'][5]} ${snap['data']['number'][6]}${snap['data']['number'][7]}${snap['data']['number'][8]}${snap['data']['number'][9]}",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: 34,
