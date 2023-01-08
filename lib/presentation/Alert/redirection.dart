@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nakacheck/core/app_export.dart';
@@ -115,8 +114,6 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
                       if (result != 'success') {
                         return;
                       }
-
-                      // log("u naughty");
                     })),
                 Text(
                   App.onduty ? "On-Duty" : "Off-Duty",
@@ -142,7 +139,19 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.vehicle.number ?? "",
+                widget.vehicle.number![0] +
+                    widget.vehicle.number![1] +
+                    " " +
+                    widget.vehicle.number![2] +
+                    widget.vehicle.number![3] +
+                    " " +
+                    widget.vehicle.number![4] +
+                    widget.vehicle.number![5] +
+                    " " +
+                    widget.vehicle.number![6] +
+                    widget.vehicle.number![7] +
+                    widget.vehicle.number![8] +
+                    widget.vehicle.number![9],
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontSize: 34,
@@ -157,120 +166,132 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
               Divider(
                 thickness: 1,
               ),
+              SizedBox(
+                height: 32,
+                child: Text(
+                  widget.sus
+                      ? "Suspicious Vehicle attest under Fir : " +
+                          widget.vehicle.fir.toString()
+                      : "Safe Vehicle",
+                  style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 16,
+                      color: widget.sus
+                          ? ColorConstant.red300
+                          : ColorConstant.yellow800),
+                ),
+              ),
               Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: Image.network(
-                              "https://nakacheck-3.suhailahmad4.repl.co/" +
-                                  (widget.vehicle.picture ?? "")),
-                          height: 206,
-                          width: 136,
+                  Row(
+                    children: [
+                      Container(
+                        child: Image.network(
+                            "https://nakacheck-3.suhailahmad4.repl.co/" +
+                                (widget.vehicle.picture ?? "")),
+                        height: 206,
+                        width: 136,
+                      ),
+                      Container(
+                        width: 195,
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '• Company:  ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: (widget.sus)
+                                            ? (widget.sus)
+                                                ? ColorConstant.red300
+                                                : ColorConstant.yellow800
+                                            : ColorConstant.yellow800),
+                                  ),
+                                  Text(widget.vehicle.company ?? "",
+                                      style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '• Model:  ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: (widget.sus)
+                                            ? ColorConstant.red300
+                                            : ColorConstant.yellow800),
+                                  ),
+                                  Text(widget.vehicle.model ?? "",
+                                      style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '• Color:  ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: (widget.sus)
+                                            ? ColorConstant.red300
+                                            : ColorConstant.yellow800),
+                                  ),
+                                  Text(widget.vehicle.color ?? "",
+                                      style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '• Reg. Date:  ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: (widget.sus)
+                                            ? ColorConstant.red300
+                                            : ColorConstant.yellow800),
+                                  ),
+                                  Text(widget.vehicle.regDate ?? "",
+                                      style: TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '• Registered Under:  ',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: (widget.sus)
+                                            ? ColorConstant.red300
+                                            : ColorConstant.yellow800),
+                                  ),
+                                  Container(
+                                    width: 53,
+                                    child: Text(widget.vehicle.regUnder ?? "",
+                                        style: TextStyle(fontSize: 14)),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                        Container(
-                          width: 195,
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '• Company:  ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: (widget.sus)
-                                              ? (widget.sus)
-                                                  ? ColorConstant.red300
-                                                  : ColorConstant.yellow800
-                                              : ColorConstant.yellow800),
-                                    ),
-                                    Text(widget.vehicle.company ?? "",
-                                        style: TextStyle(fontSize: 14)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '• Model:  ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: (widget.sus)
-                                              ? ColorConstant.red300
-                                              : ColorConstant.yellow800),
-                                    ),
-                                    Text(widget.vehicle.model ?? "",
-                                        style: TextStyle(fontSize: 14)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '• Color:  ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: (widget.sus)
-                                              ? ColorConstant.red300
-                                              : ColorConstant.yellow800),
-                                    ),
-                                    Text(widget.vehicle.color ?? "",
-                                        style: TextStyle(fontSize: 14)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '• Reg. Date:  ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: (widget.sus)
-                                              ? ColorConstant.red300
-                                              : ColorConstant.yellow800),
-                                    ),
-                                    Text(widget.vehicle.regDate ?? "",
-                                        style: TextStyle(fontSize: 14)),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '• Registered Under:  ',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: (widget.sus)
-                                              ? ColorConstant.red300
-                                              : ColorConstant.yellow800),
-                                    ),
-                                    Container(
-                                      width: 53,
-                                      child: Text(widget.vehicle.regUnder ?? "",
-                                          style: TextStyle(fontSize: 14)),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                   Container(
                     height: 250,

@@ -6,9 +6,10 @@ class Vehicle {
   String? picture;
   String? model;
   String? regUnder;
+  String? fir;
 
   Vehicle(String company, String number, String color, String regDate,
-      String regUnder, String picture, String model) {
+      String regUnder, String picture, String model, String fir) {
     this.company = company;
     this.number = number;
     this.color = color;
@@ -16,5 +17,6 @@ class Vehicle {
     this.regUnder = regUnder;
     this.picture = picture;
     this.model = model;
+    this.fir = fir;
   }
 }

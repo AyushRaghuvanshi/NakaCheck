@@ -268,27 +268,22 @@ class _AlertState extends ConsumerState<Alert> {
                             child: Container(
                                 child: data.when(
                               data: (data) {
-                                log(data.toString());
+                                log("data -----------" + data.toString());
 
                                 return ListView.builder(
                                   itemBuilder: (context, index) {
-                                    int timecolon = data[index]['time']
-                                        .toString()
-                                        .indexOf(':');
-                                    String time = data[index]['time']
-                                            .toString()
-                                            .substring(
-                                                timecolon - 2, timecolon) +
-                                        data[index]['time']
-                                            .toString()
-                                            .substring(
-                                                timecolon, timecolon + 3);
-                                    String location = data[index]
-                                                ['sender_location']
-                                            .toString()
+                                    DateTime timenow =
+                                        DateTime.parse(data[index]['time']);
+                                    timenow = timenow
+                                        .add(Duration(hours: 5, minutes: 30));
+                                    String location = (data[index]
+                                                        ['sender_location']
+                                                    .toString() +
+                                                ",,,")
                                             .split(',')[0] +
-                                        data[index]['sender_location']
-                                            .toString()
+                                        (data[index]['sender_location']
+                                                    .toString() +
+                                                ",,,")
                                             .split(',')[1];
                                     log(location);
                                     return Padding(
@@ -298,7 +293,10 @@ class _AlertState extends ConsumerState<Alert> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              '${time} - ',
+                                              timenow.hour.toString() +
+                                                  ":" +
+                                                  timenow.minute.toString() +
+                                                  "-",
                                               style: TextStyle(
                                                   color: (snap['Suspicious'] ==
                                                           "True")
@@ -316,7 +314,9 @@ class _AlertState extends ConsumerState<Alert> {
                                   itemCount: data.length,
                                 );
                               },
-                              error: (error, stackTrace) {},
+                              error: (error, stackTrace) {
+                                log(error.toString());
+                              },
                               loading: () => Center(
                                 child: CircularProgressIndicator(),
                               ),

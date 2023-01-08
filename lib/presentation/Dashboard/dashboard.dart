@@ -27,6 +27,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
     // TODO: implement initState
     _numberplate = TextEditingController();
     App.sendLatLong();
+    App.dutyCheck();
     super.initState();
   }
 

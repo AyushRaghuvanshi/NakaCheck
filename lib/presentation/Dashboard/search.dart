@@ -41,7 +41,8 @@ class Search extends ConsumerWidget {
           res['data']['registrationDate'],
           res['data']['registrationUnder'],
           res['data']['picture'],
-          res['data']['model']);
+          res['data']['model'],
+          res['data']['fir']);
       ref.watch(numberPlate.notifier).state = vehicle.number;
       if (res['Suspicious'] == 'True') {
         Navigator.push(
@@ -146,7 +147,8 @@ class Search extends ConsumerWidget {
                           res['data']['registrationDate'],
                           res['data']['registeredUnder'],
                           res['data']['picture'],
-                          res['data']['model']);
+                          res['data']['model'],
+                          res['data']['fir']);
                       ref.watch(numberPlate.notifier).state =
                           vehicle.number ?? "";
                       if (res['Suspicious'] == 'True') {
