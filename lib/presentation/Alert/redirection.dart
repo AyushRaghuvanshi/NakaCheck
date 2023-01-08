@@ -281,14 +281,6 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
 
                         return ListView.builder(
                           itemBuilder: (context, index) {
-                            int timecolon =
-                                data[index]['time'].toString().indexOf(':');
-                            String time = data[index]['time']
-                                    .toString()
-                                    .substring(timecolon - 2, timecolon) +
-                                data[index]['time']
-                                    .toString()
-                                    .substring(timecolon, timecolon + 3);
                             String location = data[index]['sender_location']
                                     .toString()
                                     .split(',')[0] +
@@ -296,6 +288,10 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
                                     .toString()
                                     .split(',')[1];
                             log(location);
+                            DateTime timenow =
+                                DateTime.parse(data[index]['time']);
+                            timenow =
+                                timenow.add(Duration(hours: 5, minutes: 30));
                             return Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: SingleChildScrollView(
@@ -303,7 +299,10 @@ class _RedirectionAlertState extends ConsumerState<RedirectionAlert> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      '${time} - ',
+                                      timenow.hour.toString() +
+                                          ":" +
+                                          timenow.minute.toString() +
+                                          "- ",
                                       style: TextStyle(
                                           color: (widget.sus)
                                               ? ColorConstant.red300
