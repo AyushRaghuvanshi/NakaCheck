@@ -12,3 +12,7 @@ final alertsprov = FutureProvider<dynamic>((ref) {
 final numberPlate = StateProvider(
   (ref) => "",
 );
+
+final recorder = StateProvider(
+  (ref) => true,
+);

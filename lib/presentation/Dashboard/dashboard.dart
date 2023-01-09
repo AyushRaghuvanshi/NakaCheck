@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nakacheck/core/app_export.dart';
 import 'package:nakacheck/core/utils/color_constant.dart';
 import 'package:nakacheck/presentation/Alert/alert.dart';
+import 'package:nakacheck/presentation/Dashboard/anonymousAlert.dart';
 import 'package:nakacheck/presentation/Dashboard/search.dart';
 import 'package:nakacheck/presentation/login_page_one_screen/login_page_one_screen.dart';
 import 'package:nakacheck/services/Api.dart';
@@ -22,6 +24,7 @@ class DashBoard extends ConsumerStatefulWidget {
 
 class _DashBoardState extends ConsumerState<DashBoard> {
   late TextEditingController _numberplate;
+  int index = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -92,6 +95,7 @@ class _DashBoardState extends ConsumerState<DashBoard> {
         toolbarHeight: 70,
         backgroundColor: ColorConstant.gray900,
         leadingWidth: 72,
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Builder(
@@ -160,132 +164,234 @@ class _DashBoardState extends ConsumerState<DashBoard> {
         child: Column(
           children: [
             SizedBox(height: 12),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Recent Alerts",
-                maxLines: null,
-                style: TextStyle(
-                  color: ColorConstant.whiteA700,
-                  fontSize: getFontSize(
-                    34,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: (MediaQuery.of(context).size.width / 2) - 20,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: (() {
+                            setState(() {
+                              index = 0;
+                            });
+                          }),
+                          child: Center(
+                            child: Text(
+                              "Recent\n Alerts",
+                              maxLines: null,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: ColorConstant.whiteA700,
+                                fontSize: getFontSize(
+                                  20,
+                                ),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 2,
+                        width: 50,
+                        color: (index == 0)
+                            ? ColorConstant.yellow800
+                            : Colors.transparent,
+                      )
+                    ],
                   ),
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w700,
                 ),
-              ),
+                Container(
+                  width: 2,
+                  height: 64,
+                  color: Colors.grey,
+                ),
+                Container(
+                  width: (MediaQuery.of(context).size.width / 2) - 20,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index = 1;
+                              });
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Center(
+                                child: Text(
+                                  "Anonymous\n Alerts",
+                                  maxLines: null,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: ColorConstant.whiteA700,
+                                    fontSize: getFontSize(
+                                      20,
+                                    ),
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 2,
+                          width: 50,
+                          color: (index == 1)
+                              ? ColorConstant.yellow800
+                              : Colors.transparent,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             Divider(
               thickness: 1,
             ),
-            Expanded(
-              child: alerts.when(
-                data: (data) => SmartRefresher(
-                  enablePullDown: true,
-                  controller: _refreshController,
-                  onRefresh: () async {
-                    ref.refresh(App.alertGetProvider);
-                    await Future.delayed(Duration(seconds: 1));
-                    _refreshController.refreshCompleted();
-                  },
-                  child: ListView.builder(
-                    itemCount: alerts.value.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          ref.watch(numberPlate.notifier).state =
-                              alerts.value[index]["vehicle_number"];
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Alert(
-                                      numberplate: alerts.value[index]
-                                          ["vehicle_number"],
-                                    )),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Container(
-                              height: 156,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: ColorConstant.boxBackBlack,
-                                  border: Border.all(
-                                      color: ColorConstant.boxBackBlack),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.83,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(alerts
-                                                              .value[index]
-                                                          ["alert_type"] ==
-                                                      "High Alert"
-                                                  ? "assets/images/alert_red.svg"
-                                                  : "assets/images/alert_yellow.svg"),
-                                              Expanded(
-                                                child: Text(
-                                                  "${alerts.value[index]["vehicle_number"][0]}${alerts.value[index]["vehicle_number"][1]} ${alerts.value[index]["vehicle_number"][2]}${alerts.value[index]["vehicle_number"][3]} ${alerts.value[index]["vehicle_number"][4]}${alerts.value[index]["vehicle_number"][5]} ${alerts.value[index]["vehicle_number"][6]}${alerts.value[index]["vehicle_number"][7]}${alerts.value[index]["vehicle_number"][8]}${alerts.value[index]["vehicle_number"][9]}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 28,
-                                                    color: alerts.value[index][
-                                                                "alert_type"] ==
-                                                            "High Alert"
-                                                        ? ColorConstant.red300
-                                                        : ColorConstant
-                                                            .yellow800,
-                                                    fontFamily: "Poppins",
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          Expanded(
-                                            child: Center(
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "The Vehicle Was Spotted At ${alerts.value[index]["sender_location"].split(",")[0]} , ${alerts.value[index]["sender_location"].split(",")[1]}",
-                                                  style: TextStyle(
-                                                      fontFamily: "Poppins",
-                                                      fontSize: 18),
+            Container(
+                child: (index == 0)
+                    ? Expanded(
+                        child: alerts.when(
+                          data: (data) => SmartRefresher(
+                            enablePullDown: true,
+                            controller: _refreshController,
+                            onRefresh: () async {
+                              ref.refresh(App.alertGetProvider);
+                              await Future.delayed(Duration(seconds: 1));
+                              _refreshController.refreshCompleted();
+                            },
+                            child: ListView.builder(
+                              itemCount: alerts.value.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    ref.watch(numberPlate.notifier).state =
+                                        alerts.value[index]["vehicle_number"];
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Alert(
+                                                numberplate: alerts.value[index]
+                                                    ["vehicle_number"],
+                                              )),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Container(
+                                        height: 156,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstant.boxBackBlack,
+                                            border: Border.all(
+                                                color:
+                                                    ColorConstant.boxBackBlack),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.83,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        SvgPicture.asset(alerts
+                                                                            .value[
+                                                                        index][
+                                                                    "alert_type"] ==
+                                                                "High Alert"
+                                                            ? "assets/images/alert_red.svg"
+                                                            : "assets/images/alert_yellow.svg"),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${alerts.value[index]["vehicle_number"][0]}${alerts.value[index]["vehicle_number"][1]} ${alerts.value[index]["vehicle_number"][2]}${alerts.value[index]["vehicle_number"][3]} ${alerts.value[index]["vehicle_number"][4]}${alerts.value[index]["vehicle_number"][5]} ${alerts.value[index]["vehicle_number"][6]}${alerts.value[index]["vehicle_number"][7]}${alerts.value[index]["vehicle_number"][8]}${alerts.value[index]["vehicle_number"][9]}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 28,
+                                                              color: alerts.value[
+                                                                              index]
+                                                                          [
+                                                                          "alert_type"] ==
+                                                                      "High Alert"
+                                                                  ? ColorConstant
+                                                                      .red300
+                                                                  : ColorConstant
+                                                                      .yellow800,
+                                                              fontFamily:
+                                                                  "Poppins",
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Expanded(
+                                                      child: Center(
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            "The Vehicle Was Spotted At ${alerts.value[index]["sender_location"].split(",")[0]} , ${alerts.value[index]["sender_location"].split(",")[1]}",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Poppins",
+                                                                fontSize: 18),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
                                                 ),
                                               ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                            Icon(
+                                              Icons.arrow_forward_ios_outlined,
+                                              color:
+                                                  ColorConstant.boxArrowColor,
+                                            )
+                                          ],
+                                        )),
                                   ),
-                                  Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: ColorConstant.boxArrowColor,
-                                  )
-                                ],
-                              )),
+                                );
+                              },
+                            ),
+                          ),
+                          loading: () => Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          error: (error, stackTrace) => Center(
+                            child: Text("Error"),
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                ),
-                loading: () => Center(
-                  child: CircularProgressIndicator(),
-                ),
-                error: (error, stackTrace) => Center(
-                  child: Text("Error"),
-                ),
-              ),
-            )
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: 2,
+                          itemBuilder: (context, index) {
+                            return AnoALert();
+                          },
+                        ),
+                      ))
           ],
         ),
       ),

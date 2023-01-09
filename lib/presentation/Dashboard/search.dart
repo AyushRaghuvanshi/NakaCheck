@@ -69,6 +69,32 @@ class Search extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: GestureDetector(
+          onLongPress: () {
+            // recording =true;
+            ref.watch(recorder.notifier).state = true;
+            log('recorder ON');
+          },
+          onLongPressEnd: (details) {
+            ref.watch(recorder.notifier).state = false;
+            log('recorder off');
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => _buildPopupDialog(context),
+            );
+          },
+          child: Container(
+            height: 50,
+            child: Icon(
+              (!ref.watch(recorder)) ? Icons.mic_none : Icons.mic,
+              color: Colors.white,
+            ),
+            width: 50,
+            decoration: BoxDecoration(
+                color: ColorConstant.yellow800,
+                borderRadius: BorderRadius.all(Radius.circular(100))),
+          ),
+        ),
         backgroundColor: ColorConstant.gray900,
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -353,6 +379,31 @@ class Search extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: ColorConstant.gray900,
+      title: const Text('Create Anonymous Alert'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+              "Do you want to create anonymous alert using following recording?"),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(onPressed: () {}, child: Text('Yes')),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          // textColor: Theme.of(context).primaryColor,
+          child: const Text('No'),
+        ),
+      ],
     );
   }
 }
