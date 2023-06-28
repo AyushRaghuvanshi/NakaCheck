@@ -10,6 +10,18 @@ There is a database of stolen vehicle in the vahan portal maintained by the mini
 
 Using computer vision to extract vehicle number from the license plate.
 Optimizing the code to make it feasible in real time.
+### Screenshots
+<p align="center">
+   <img src = "https://github.com/AyushRaghuvanshi/NakaCheck/assets/62144720/85a744f9-4027-4c8d-a4b2-f7174339cc87" width="150">
+   <img src = "https://github.com/AyushRaghuvanshi/NakaCheck/assets/62144720/d1ab7f48-fa38-4dd3-9093-164e09bf05cd" width="150"> 
+  <img src = "https://github.com/AyushRaghuvanshi/NakaCheck/assets/62144720/244f28f5-5d63-43c6-b48e-35e71bb5c518" width="150">
+   <img src = "https://github.com/AyushRaghuvanshi/NakaCheck/assets/62144720/d18e0b10-c747-4b4a-8898-de64db264f7d" width="150">
+   <img src = "https://github.com/AyushRaghuvanshi/NakaCheck/assets/62144720/375cb943-fe0e-4211-b4d8-cba114efcd50" width="150">
+</p>
+
+### Demo Video
+<a href="https://youtu.be/sXD_NOYAsO8">Click here</a> to view the demo video.
+
 
 ### Links
 
